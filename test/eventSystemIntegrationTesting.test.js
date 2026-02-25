@@ -153,13 +153,17 @@ test.describe("Event service enrollAttendee integration testing", () => {
     test("enrollAttendee cannot add a new enrollment to the DB if there is no event with that name", async () => {
         await createAttendee(db, { name: "John Doe", email: "jdoe@gmail.com" });
 
-        await assert.rejects(() => enrollAttendee(db, "Royal Gala", "jdoe@gmail.com"), { name: "Error" });
+        await assert.rejects(() => enrollAttendee(db, "Royal Gala", "jdoe@gmail.com"), {
+            message: "Event does not exist",
+        });
     });
 
     test("enrollAttendee cannot add a new enrollment to the DB if there is not attendee with matching email", async () => {
         await createEvent(db, { name: "Royal Gala", date: "2026-04-12", capacity: 50 });
 
-        await assert.rejects(() => enrollAttendee(db, "Royal Gala", "jdoe@gmail.com"), { name: "Error" });
+        await assert.rejects(() => enrollAttendee(db, "Royal Gala", "jdoe@gmail.com"), {
+            message: "Attendee does not exist",
+        });
     });
 
     test("enrollAttendee cannot add duplicate enrollments to the DB", async () => {
@@ -168,7 +172,9 @@ test.describe("Event service enrollAttendee integration testing", () => {
         await createEvent(db, { name: "Royal Gala", date: "2026-04-12", capacity: 50 });
 
         await enrollAttendee(db, "Royal Gala", "jdoe@gmail.com");
-        await assert.rejects(() => enrollAttendee(db, "Royal Gala", "jdoe@gmail.com"), { name: "Error" });
+        await assert.rejects(() => enrollAttendee(db, "Royal Gala", "jdoe@gmail.com"), {
+            message: "Duplicate enrollment cannot exist",
+        });
     });
 
     test("enrollAttendee cannot add enrollments past capacity to the DB", async () => {
@@ -178,7 +184,9 @@ test.describe("Event service enrollAttendee integration testing", () => {
         await createEvent(db, { name: "Royal Gala", date: "2026-04-12", capacity: 1 });
 
         await enrollAttendee(db, "Royal Gala", "jdoe@gmail.com");
-        await assert.rejects(() => enrollAttendee(db, "Royal Gala", "dburnham@gmail.com"), { name: "Error" });
+        await assert.rejects(() => enrollAttendee(db, "Royal Gala", "dburnham@gmail.com"), {
+            message: "Cannot enroll attendee, maximum attendance reached",
+        });
     });
 });
 
@@ -218,13 +226,17 @@ test.describe("Event service checkInAttendee integration testing", () => {
     test("checkInAttendee throws an error if event does not exist", async () => {
         await createAttendee(db, { name: "John Doe", email: "jdoe@gmail.com" });
 
-        await assert.rejects(() => checkInAttendee(db, "Royal Gala", "jdoe@gmail.com"), { name: "Error" });
+        await assert.rejects(() => checkInAttendee(db, "Royal Gala", "jdoe@gmail.com"), {
+            message: "Event does not exist",
+        });
     });
 
     test("checkInAttendee throws an error if attendee does not exist", async () => {
         await createEvent(db, { name: "Royal Gala", date: "2026-04-12", capacity: 50 });
 
-        await assert.rejects(() => checkInAttendee(db, "Royal Gala", "jdoe@gmail.com"), { name: "Error" });
+        await assert.rejects(() => checkInAttendee(db, "Royal Gala", "jdoe@gmail.com"), {
+            message: "Attendee does not exist",
+        });
     });
 
     test("checkInAttendee throws an error if attendee is already checked in to the event", async () => {
@@ -235,7 +247,9 @@ test.describe("Event service checkInAttendee integration testing", () => {
         await enrollAttendee(db, "Royal Gala", "jdoe@gmail.com");
 
         await checkInAttendee(db, "Royal Gala", "jdoe@gmail.com");
-        await assert.rejects(() => checkInAttendee(db, "Royal Gala", "jdoe@gmail.com"), { name: "Error" });
+        await assert.rejects(() => checkInAttendee(db, "Royal Gala", "jdoe@gmail.com"), {
+            message: "Attendee already checked in, cannot check in attendee twice",
+        });
     });
 });
 
