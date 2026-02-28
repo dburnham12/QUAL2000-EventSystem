@@ -51,7 +51,7 @@ const createEvent = async (db, event) => {
     validateEvent(event);
     // Then create the even in the db
     return await addEvent(db, {
-        name: event.name.trim().toLowerCase(),
+        name: event.name.trim(),
         date: event.date.trim(),
         capacity: event.capacity,
     });
@@ -126,7 +126,7 @@ const checkForDuplicateEnrollment = (enrollment) => {
 // Function used to enroll an attendee into an event using the event name and attendee email
 const enrollAttendee = async (db, eventName, attendeeEmail) => {
     // Retrieve event from db
-    const event = await getEventByName(db, eventName.toLowerCase());
+    const event = await getEventByName(db, eventName);
     // Check if the event was found
     if (!event) throw new Error("Event does not exist");
     // Make sure other validation is correct for the event
@@ -169,7 +169,7 @@ const validateCheckIn = (enrollment) => {
 // Function used to check in an attendee to an event based on event name and attendee email
 const checkInAttendee = async (db, eventName, attendeeEmail) => {
     // First get the event
-    const event = await getEventByName(db, eventName.toLowerCase());
+    const event = await getEventByName(db, eventName);
     // Check if the event was found
     if (!event) throw new Error("Event does not exist");
     // Sanity check to validate the event is of correct format
