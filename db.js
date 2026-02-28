@@ -1,9 +1,7 @@
 const sqlite3 = require("sqlite3");
 // Creates and returns a new in-memory database connection
 const createDb = () => {
-    const db = new sqlite3.Database(":memory:");
-    db.exec("PRAGMA foreign_keys = ON");
-    return db;
+    return new sqlite3.Database(":memory:");
 };
 
 // Executes a SQL statement with optional parameters
@@ -66,8 +64,8 @@ const initSchema = async (db) => {
       attendee_id INTEGER NOT NULL,
       checked_in BOOLEAN DEFAULT FALSE,
       PRIMARY KEY (event_id, attendee_id),
-      FOREIGN KEY(event_id) REFERENCES events(id) ON DELETE CASCADE,
-      FOREIGN KEY(attendee_id) REFERENCES attendees(id) ON DELETE CASCADE
+      FOREIGN KEY(event_id) REFERENCES events(id),
+      FOREIGN KEY(attendee_id) REFERENCES attendees(id)
     )`,
     );
 };

@@ -51,7 +51,7 @@ const createEvent = async (db, event) => {
     validateEvent(event);
     // Then create the even in the db
     return await addEvent(db, {
-        name: event.name.trim(),
+        name: event.name.trim().toLowerCase(),
         date: event.date.trim(),
         capacity: event.capacity,
     });
@@ -126,7 +126,7 @@ const checkForDuplicateEnrollment = (enrollment) => {
 // Function used to enroll an attendee into an event using the event name and attendee email
 const enrollAttendee = async (db, eventName, attendeeEmail) => {
     // Retrieve event from db
-    const event = await getEventByName(db, eventName);
+    const event = await getEventByName(db, eventName.toLowerCase());
     // Check if the event was found
     if (!event) throw new Error("Event does not exist");
     // Make sure other validation is correct for the event
@@ -136,7 +136,7 @@ const enrollAttendee = async (db, eventName, attendeeEmail) => {
     // Make sure the values passed are valid and the event is not full
     validateEnrollmentCount(event.capacity, enrollmentCount);
     // Retrieve the attendee from the db
-    const attendee = await getAttendeeByEmail(db, attendeeEmail);
+    const attendee = await getAttendeeByEmail(db, attendeeEmail.toLowerCase());
     // Check if the attendee exists
     if (!attendee) throw new Error("Attendee does not exist");
     // Makes sure other validation is correct for the attendee
@@ -169,13 +169,13 @@ const validateCheckIn = (enrollment) => {
 // Function used to check in an attendee to an event based on event name and attendee email
 const checkInAttendee = async (db, eventName, attendeeEmail) => {
     // First get the event
-    const event = await getEventByName(db, eventName);
+    const event = await getEventByName(db, eventName.toLowerCase());
     // Check if the event was found
     if (!event) throw new Error("Event does not exist");
     // Sanity check to validate the event is of correct format
     validateEvent(event);
     // Get the attendee
-    const attendee = await getAttendeeByEmail(db, attendeeEmail);
+    const attendee = await getAttendeeByEmail(db, attendeeEmail.toLowerCase());
     // Check if the attendee was found
     if (!attendee) throw new Error("Attendee does not exist");
     // Sanity check to validate the attendee is of correct format

@@ -1,12 +1,15 @@
 const { run, get, all } = require("./db");
 
+// Function used to insert an event to the db
 const addEvent = async (db, event) => {
+    // Set up the insertion and run it
     const result = await run(db, "INSERT INTO events (name, date, capacity) VALUES (?, ?, ?)", [
         event.name,
         event.date,
         event.capacity,
     ]);
 
+    // Return the newly created event
     return {
         id: result.lastID,
         name: event.name,
@@ -15,18 +18,22 @@ const addEvent = async (db, event) => {
     };
 };
 
+// Function used to get all events from the db
 const getEvents = async (db) => {
     return await all(db, "SELECT * FROM events");
 };
 
+// Function used to return an event by name
 const getEventByName = async (db, name) => {
-    const result = await get(db, "SELECT * FROM events WHERE name = ?", [name]);
-    return result;
+    return await get(db, "SELECT * FROM events WHERE name = ?", [name]);
 };
 
+// Function used to add an attendee to the db
 const addAttendee = async (db, attendee) => {
+    // Set up and insert the attendee to the db
     const result = await run(db, "INSERT INTO attendees (name, email) VALUES (?, ?)", [attendee.name, attendee.email]);
 
+    // return the newly created attendee
     return {
         id: result.lastID,
         name: attendee.name,
@@ -34,6 +41,7 @@ const addAttendee = async (db, attendee) => {
     };
 };
 
+//
 const getAllAttendees = async (db) => {
     return await all(db, "SELECT * FROM attendees");
 };
@@ -45,7 +53,7 @@ const getAttendeeByEmail = async (db, email) => {
 
 const addEventAttendee = async (db, eventId, attendeeId) => {
     await run(db, "INSERT INTO event_attendees (event_id, attendee_id) VALUES (?, ?)", [eventId, attendeeId]);
-    const result = getEnrollmentByIds(db, eventId, attendeeId);
+    const result = await getEnrollmentByIds(db, eventId, attendeeId);
     return result;
 };
 
@@ -62,7 +70,7 @@ const confirmAttendeeCheckin = async (db, eventId, attendeeId) => {
         eventId,
         attendeeId,
     ]);
-    const result = getEnrollmentByIds(db, eventId, attendeeId);
+    const result = await getEnrollmentByIds(db, eventId, attendeeId);
     return result;
 };
 

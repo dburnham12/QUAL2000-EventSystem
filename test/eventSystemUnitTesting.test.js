@@ -8,6 +8,9 @@ const {
     validateCheckIn,
 } = require("../eventService");
 
+// Unit tests for event service
+
+// Unit tests for validateEvent function
 test.describe("validateEvent Unit Tests", () => {
     test("Testing if validateEvent returns an error if event is an invalid type", () => {
         assert.throws(() => validateEvent(null), { message: "Event must be an object" });
@@ -80,6 +83,7 @@ test.describe("validateEvent Unit Tests", () => {
     });
 });
 
+// Unit tests for validateAttendee function
 test.describe("validateAttendee Unit Tests", () => {
     test("Testing if validateAttendee returns an error if event is an invalid type", () => {
         assert.throws(() => validateAttendee(null), { message: "Attendee must be an object" });
@@ -143,6 +147,7 @@ test.describe("validateAttendee Unit Tests", () => {
     });
 });
 
+// Unit tests for validateEnrollmentCount function
 test.describe("validateEnrollmentCount Unit Tests", () => {
     test("Testing validateEnrollmentCount to ensure that event capacity cannot be invalid types", () => {
         assert.throws(() => validateEnrollmentCount(null, 10), { message: "Max attendees must be an integer" });
@@ -170,6 +175,7 @@ test.describe("validateEnrollmentCount Unit Tests", () => {
     });
 });
 
+// Unit test for checkForDuplicateEnrollment function
 test.describe("checkForDuplicateEnrollment Unit Tests", () => {
     test("Testing checkForDuplicateEnrollment fails if there already is an existing enrollment", () => {
         assert.throws(() => checkForDuplicateEnrollment({ event_id: 1, attendee_id: 1, checked_in: false }), {
@@ -182,6 +188,7 @@ test.describe("checkForDuplicateEnrollment Unit Tests", () => {
     });
 });
 
+// Unit tests for validateCheckIn function
 test.describe("validateCheckIn Unit Tests", () => {
     test("Testing validateCheckIn if checked_in value provided is invalid", () => {
         assert.throws(() => validateCheckIn({ event_id: 1, attendee_id: 1, checked_in: null }), {
