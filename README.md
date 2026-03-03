@@ -4,39 +4,53 @@ This application is a simple event attendance system developed using Node.js.
 
 It allows for:
 
-- The creation of events
-- The creation of event attendees
+- Creation of events
+- Creation of event attendees
 - Attendee enrollment
-- Attendee check in
-- Full event report generation (either console based or through created report.json file)
+- Attendee check-in
+- Full event report generation (either console-based or through a generated `report.json` file)
 
-## Running The application
+## Design Decision: Event Names
 
-The application is a simple terminal/console based application.
+For simplicity, event names are unique. This allows events to be searched and referenced using their names instead of only using an ID.
 
-To set up dependencies first run:
+## Running the Application
+
+The application is a terminal/console-based program.
+
+To get a copy of the code on your machine, run the following command in a terminal:
+
+`git clone https://github.com/dburnham12/QUAL2000-EventSystem.git`
+
+This will download the repository to your local machine.
+
+### Install dependencies
+
+Run:
 
 `npm install`
 
-This will install the node_modules folder
+This installs the required dependencies in the `node_modules` folder.
 
-Next to run the application in the terminal simply run:
+### Start the application
+
+Run:
 
 `node main.js`
 
-This will launch the application.
+This launches the application.
 
 ## Application Console
 
-The application console uses a simple command line structure which is navigated by using number input.
+The application uses a simple menu-driven command-line interface navigated through numeric input.
 
-Upon entering a number the program will provide a series of prompts that must be filled in order to process that action.
+After selecting an option, the program prompts the user for the required information to complete the action.
 
-If an error occurs the error message will be displayed to the console indicating that the operation has failed.
+If an error occurs, an error message is displayed indicating that the operation has failed.
 
 ## Testing
 
-To test the system simply run the command:
+To run the test suite:
 
 `node --test`
 
@@ -44,8 +58,8 @@ OR
 
 `npm test`
 
-This will launch the test suites.
+This executes all automated tests.
 
 ## Continuous Integration
 
-This repository uses GitHub actions to control the workflow of testing. This workflow runs automatically on push and pull requests to the main branch. It installs dependencies and executes all tests. If any test fails, the workflow fails.
+This repository uses GitHub Actions for automated testing. The workflow runs automatically on pushes and pull requests to the `main` branch. It installs dependencies and executes all tests. If any test fails, the workflow fails.
