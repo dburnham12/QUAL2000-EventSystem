@@ -143,7 +143,11 @@ test.describe("validateAttendee Unit Tests", () => {
     });
 
     test("Testing if validateAttendee will not throw an error for a valid attendee", () => {
+        assert.strictEqual(validateAttendee({ name: "John Doe", email: "jdoe@example.example.com" }), undefined);
         assert.strictEqual(validateAttendee({ name: "John Doe", email: "jdoe@example.com" }), undefined);
+        assert.strictEqual(validateAttendee({ name: "John Doe", email: "j-doe@example.com" }), undefined);
+        assert.strictEqual(validateAttendee({ name: "John Doe", email: "j-doe@example.ca" }), undefined);
+        assert.strictEqual(validateAttendee({ name: "John Doe", email: "j+doe@example.ca" }), undefined);
     });
 });
 
