@@ -20,7 +20,7 @@ const addEvent = async (db, event) => {
 
 // Function used to get all events from the db
 const getEvents = async (db) => {
-    return await all(db, "SELECT * FROM events");
+    return await all(db, "SELECT * FROM events ORDER BY id");
 };
 
 // Function used to return an event by name
@@ -41,30 +41,29 @@ const addAttendee = async (db, attendee) => {
     };
 };
 
-//
+// Function used to get all attendees
 const getAllAttendees = async (db) => {
-    return await all(db, "SELECT * FROM attendees");
+    return await all(db, "SELECT * FROM attendees ORDER BY id");
 };
 
+// Function used to get an attendee by their email
 const getAttendeeByEmail = async (db, email) => {
-    const result = await get(db, "SELECT * FROM attendees WHERE email = ?", [email]);
-    return result;
+    return await get(db, "SELECT * FROM attendees WHERE email = ?", [email]);
 };
 
+// Function used to add an event attendee (enrollment)
 const addEventAttendee = async (db, eventId, attendeeId) => {
     await run(db, "INSERT INTO event_attendees (event_id, attendee_id) VALUES (?, ?)", [eventId, attendeeId]);
     const result = await getEnrollmentByIds(db, eventId, attendeeId);
     return result;
 };
 
+// Function used to get an enrollment based off of its respective ids
 const getEnrollmentByIds = async (db, eventId, attendeeId) => {
-    const result = await get(db, "SELECT * FROM event_attendees WHERE event_id = ? AND attendee_id = ?", [
-        eventId,
-        attendeeId,
-    ]);
-    return result;
+    return await get(db, "SELECT * FROM event_attendees WHERE event_id = ? AND attendee_id = ?", [eventId, attendeeId]);
 };
 
+// Function used to update checked in status to checked in
 const confirmAttendeeCheckin = async (db, eventId, attendeeId) => {
     await run(db, "UPDATE event_attendees SET checked_in = 1 WHERE event_id = ? AND attendee_id = ?", [
         eventId,
@@ -74,6 +73,7 @@ const confirmAttendeeCheckin = async (db, eventId, attendeeId) => {
     return result;
 };
 
+// function used to return all event info
 const getAllEventInfo = async (db) => {
     const result = await all(
         db,
@@ -81,7 +81,8 @@ const getAllEventInfo = async (db) => {
                 a.id AS attendee_id, a.name AS attendee_name, a.email, ea.checked_in
         FROM events e 
         JOIN event_attendees ea ON e.id = ea.event_id
-        JOIN attendees a ON ea.attendee_id = a.id`,
+        JOIN attendees a ON ea.attendee_id = a.id
+        ORDER BY e.id, a.id`,
     );
 
     return result;
