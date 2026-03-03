@@ -77,6 +77,10 @@ const validateAttendee = (attendee) => {
         throw new TypeError("Attendee email must be a non empty string");
     }
     // Is the attendee email valid based on pattern recognition
+
+    // Reference
+    // https://www.findymail.com/blog/email-address-format/
+    // Used to learn what email formats are proper inorder to write regex
     const emailRegex = /^[A-Za-z0-9+._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     if (!emailRegex.test(attendee.email.trim())) {
         throw new Error("Attendee email is invalid");
