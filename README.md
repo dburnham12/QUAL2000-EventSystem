@@ -12,7 +12,7 @@ It allows for:
 
 ## Design Decision: Event Names
 
-For simplicity, event names are unique. This allows events to be searched and referenced using their names instead of only using an ID.
+For simplicity, event names are unique. This allows events to be searched and referenced using their names instead of only using an ID. Enforcing uniqueness at the database level also helps maintain data integrity and simplifies validation and testing by preventing ambiguous event selection as some events may be named the same and occur on the same date.
 
 ## Running the Application
 
